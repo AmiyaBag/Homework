@@ -1,5 +1,11 @@
-using Plots
-function stepgame(cr, next)
+mutable struct GameOfLife
+    current_frame::Matrix{Int}
+    next_frame::Matrix{Int}
+end
+
+function stepgame!(state::GameOfLife)
+    cr   = state.current_frame
+    next = state.next_frame
     for i in 1:n
         for g in 1:m
             x = cr[i, g]
@@ -10,7 +16,7 @@ function stepgame(cr, next)
             if i < n && g < m  
                 d += cr[i+1, g+1]
             end
-            if g < m    
+            if g < m
                 d += cr[i, g+1]
             end
             if i > 1     
@@ -46,15 +52,23 @@ function stepgame(cr, next)
             next[i, g] = x
         end
     end
-    return next, cr
+    # swap
+    state.current_frame = next
+    state.next_frame = cr 
+    return nothing
 end
 
-n = 30
-m = 20
-st0 = rand(0:1, n, m)
-st1 = zeros(n, m)
-anim = @animate for time = 1:30
-    st0, st1 = stepgame(st0, st1)
-    heatmap(st0)
+
+using Plots
+
+n = 150
+m = 150
+
+game = GameOfLife(rand(0:1, n, m), zeros(n, m))
+
+anim = @animate for time = 1:100
+    stepgame!(game)
+    cr = game.current_frame
+    heatmap(cr)
 end
 gif(anim, "LIFE.gif", fps = 10)
