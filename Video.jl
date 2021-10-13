@@ -5,10 +5,11 @@ if a
 else
     c
 end
-2. Как вынести в текст аргумент из массива?
-3. Как написать
-4.
-5. 
+a ? b : c
+2. Что будет, если при созданинии параболы с точками использовать scatter без "!"?
+3. Что делает plotlyjs()?
+4. Зачем нужна legend?
+5. Как перевернуть график?
 =#
 
 #Dictionaries - словари
@@ -107,14 +108,78 @@ f3 = x -> x^2
 sayhi("Anton")
 f3(9)
 
-#Non-mutating functions
+#Non-mutating functions - не изменяет исходные данные
 v = [3, 5, 2]
 sort(v)
 v
 
-#Mutating function
+#Mutating function - изменяет исходные данные 
 sort!(v)
 v
 
-#Broadcasting
-A = [i+3*j for j in 0:2, i in ]
+#=
+Broadcasting
+
+Без точки(f.(A)) функция будет воспринимать массив,
+как единое целое, а если с точкой,то будет воспринимать
+каждый элемент массива отдельно.
+=#
+A = [i+3*j for j in 0:2, i in 1:3]
+f(A)
+B = f.(A)
+B
+
+#=
+Packages
+Pkg.add("Example") <- Установка, внутри название пакета
+using Example
+=#
+using Colors
+palette = distinguishable_colors(100)
+rand(palette, 2, 2)
+
+using Plots
+x = -3:0.1:3
+f(x) = x^2
+y = f.(x)
+gr()
+plot(x, y, label="line")
+scatter!(x, y, label="points")
+
+plotlyjs()
+plot(x, y, label="line")
+scatter!(x, y, label="points")
+
+globaltemperatures = [14.4, 14.5, 14.8, 15.2, 15.2, 15.8]
+numpirates = [45000, 20000, 15000, 5000, 400, 17]
+plot(numpirates, globaltemperatures, legend=false)
+scatter!(numpirates, globaltemperatures, legend=false)
+xflip!()
+xlabel!("Пираты")
+ylabel!("Температура")
+title!("Палундра!")
+
+p1=plot(x,x)
+p2=plot(x,x.^2)
+p3=plot(x,x.^3)
+p4=plot(x,x.^4)
+plot(p1,p2,p3,p4, layout=(2,2), legend=false)
+
+#Multiple dispatch
+methods(+)
+@which 3+3
+@which 3.0+3.0
+@which 3+3.0
+
+import Base: +
++(x::String, y:: String) = string(x,y)
+"hello" + " " + "world" + "!"
+
+foo(x,y) = println("duck-typed foo!")
+foo(x::Int, y::Float64) = println("foo with an integer and a float!")
+foo(x::Float64, y::Float64) = println("foo with two floats!")
+foo(x::Int, y::Int) = println("foo with two integers!")
+foo("Hello",1)
+foo(1.,1.)
+foo(1,1.0)
+foo(true,false)
