@@ -46,6 +46,18 @@ function stepgame!(state::GameOfLife)
             if g == 1 
                 d += cr[i, g+(m-1)]
             end
+            if i == n && g == m
+                d += cr[i-(n-1), g-(m-1)]
+            end
+            if i == 1 && g == 1
+                d += cr[i+(n-1), g+(m-1)]
+            end
+            if i == 1 && g == m
+                d += cr[i+(n-1), g-(m-1)]
+            end
+            if i == n && g == 1
+                d += cr[i-(n-1), g+(m-1)]
+            end
             if d == 2 || d == 3
                 if x == 0
                     p = rand(1:10)
