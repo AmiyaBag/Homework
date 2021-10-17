@@ -10,54 +10,39 @@ function stepgame!(state::GameOfLife)
         for g in 1:m
             x = cr[i, g]
             d = 0
-            if i < n 
-                d += cr[i+1, g]
-            end
-            if i < n && g < m  
-                d += cr[i+1, g+1]
-            end
-            if g < m
-                d += cr[i, g+1]
-            end
-            if i > 1     
-                d += cr[i-1, g]
-            end
-            if i > 1 && g > 1
-                d += cr[i-1, g-1]
-            end
-            if g > 1
-                d += cr[i, g-1]
-            end
-            if g > 1 && i < n
-                d += cr[i+1, g-1]
-            end
-            if i > 1 && g < m
-                d += cr[i-1, g+1]
-            end
-            if i == n 
-                d += cr[i-(n-1), g]
-            end
-            if g == m 
-                d += cr[i, g-(m-1)]
-            end
-            if i == 1
-                d += cr[i+(n-1), g]
-            end
-            if g == 1 
-                d += cr[i, g+(m-1)]
-            end
-            if i == n && g == m
-                d += cr[i-(n-1), g-(m-1)]
-            end
-            if i == 1 && g == 1
-                d += cr[i+(n-1), g+(m-1)]
-            end
-            if i == 1 && g == m
-                d += cr[i+(n-1), g-(m-1)]
-            end
-            if i == n && g == 1
-                d += cr[i-(n-1), g+(m-1)]
-            end
+            
+            d += cr[mod1(i+1,n), mod1(g+1,m]
+            d += cr[mod1(i-1,n), mod1(g-1,m)]
+            d += cr[mod1(i+1,n), g]
+            d += cr[mod1(i-1,n), g]
+            d += cr[i, mod1(g-1,m)]
+            d += cr[i, mod1(g+1,m)]
+            d += cr[mod1(i-1,n), mod1(g+1,m)]
+            d += cr[mod1(i+1,n), mod1(g-1,m)]
+            #if i < n 
+            #    d += cr[i+1, g]
+            #end
+            #if i < n && g < m  
+            #    d += cr[i+1, g+1]
+            #end
+            #if g < m
+            #    d += cr[i, g+1]
+            #end
+            #if i > 1     
+            #    d += cr[i-1, g]
+            #end
+            #if i > 1 && g > 1
+            #    d += cr[i-1, g-1]
+            #end
+            #if g > 1
+            #    d += cr[i, g-1]
+            #end
+            #if g > 1 && i < n
+            #    d += cr[i+1, g-1]
+            #end
+            #if i > 1 && g < m
+            #    d += cr[i-1, g+1]
+            #end
             if d == 2 || d == 3
                 if x == 0
                     p = rand(1:10)
