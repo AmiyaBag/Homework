@@ -58,7 +58,6 @@ function stepgame!(state::GameOfLife)
     return nothing
 end
 
-
 using Plots
 
 n = 150
